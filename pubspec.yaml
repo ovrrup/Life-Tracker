@@ -42,12 +42,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  fonts:
-    - family: Lausanne
-      fonts:
-        - asset: assets/fonts/Lausanne-300.ttf
-          weight: 300
-        - asset: assets/fonts/Lausanne-400.ttf
-          weight: 400
-        - asset: assets/fonts/Lausanne-500.ttf
-          weight: 500

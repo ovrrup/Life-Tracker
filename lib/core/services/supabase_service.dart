@@ -203,8 +203,9 @@ class SupabaseService {
   }
 
   Future<Habit> createHabit(Habit habit) async {
-    final data = await _db.from('habits').insert(habit.toJson()).select().single();
-    return Habit.fromJson(data);
+        final payload = habit.toJson()..remove('id');
+            final data = await _db.from('habits').insert(payload).select().single();
+                return Habit.fromJson(data);
   }
 
   Future<void> updateHabit(Habit habit) async {
@@ -268,8 +269,9 @@ class SupabaseService {
   }
 
   Future<Task> createTask(Task task) async {
-    final data = await _db.from('tasks').insert(task.toJson()).select().single();
-    return Task.fromJson(data);
+        final payload = task.toJson()..remove('id');
+            final data = await _db.from('tasks').insert(payload).select().single();
+                return Task.fromJson(data);
   }
 
   Future<void> updateTask(Task task) async {
@@ -300,9 +302,11 @@ class SupabaseService {
     return MoodEntry.fromJson(data);
   }
 
-  Future<void> upsertMood(MoodEntry entry) async {
-    await _db.from('mood_entries').upsert(entry.toJson(), onConflict: 'user_id,date');
-  }
+    Future<void> upsertMood(MoodEntry entry) async {
+          final payload = entry.toJson();
+              if (entry.id.isEmpty) payload.remove('id');
+                  await _db.from('mood_entries').upsert(payload, onConflict: 'user_id,date');
+    }
 
   // ── JOURNAL ───────────────────────────────────────────────────────────────
   Future<List<JournalEntry>> getJournalEntries({int limit = 20, int offset = 0}) async {
@@ -315,8 +319,9 @@ class SupabaseService {
   }
 
   Future<JournalEntry> createJournalEntry(JournalEntry entry) async {
-    final data = await _db.from('journal_entries').insert(entry.toJson()).select().single();
-    return JournalEntry.fromJson(data);
+        final payload = entry.toJson()..remove('id');
+            final data = await _db.from('journal_entries').insert(payload).select().single();
+                return JournalEntry.fromJson(data);
   }
 
   Future<void> updateJournalEntry(JournalEntry entry) async {
@@ -336,8 +341,9 @@ class SupabaseService {
   }
 
   Future<Goal> createGoal(Goal goal) async {
-    final data = await _db.from('goals').insert(goal.toJson()).select().single();
-    return Goal.fromJson(data);
+        final payload = goal.toJson()..remove('id');
+            final data = await _db.from('goals').insert(payload).select().single();
+                return Goal.fromJson(data);
   }
 
   Future<void> updateGoal(Goal goal) async {
@@ -417,7 +423,7 @@ class SupabaseService {
         event: PostgresChangeEvent.all,
         schema: 'public',
         table: 'habit_logs',
-        filter: PostgresChangeFilter(type: FilterType.eq, column: 'user_id', value: userId),
+        filter: PostgresChangeFilter(type: PostgresChangeFilterType.eq, column: 'user_id', value: userId),
         callback: (payload) => onUpdate(payload.newRecord),
       )
       .subscribe();

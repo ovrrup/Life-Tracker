@@ -12,8 +12,9 @@ import 'shared/widgets/lt_widgets.dart';
 //  SUPABASE CONFIG  →  Replace with your project URL and anon key
 //  Get them from: https://app.supabase.com → Project Settings → API
 // ─────────────────────────────────────────────────────────────────────────────
-const _supabaseUrl  = 'https://YOUR_PROJECT_ID.supabase.co';
-const _supabaseAnon = 'YOUR_ANON_KEY';
+const _supabaseUrl  = 'https://ecjbqdgswjwegdneirav.supabase.co';
+const _supabaseAnon = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjamJxZGdzd2p3ZWdkbmVpcmF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMDY3NzQsImV4cCI6MjA5MDc4Mjc3NH0.-ImwnWgqkOks-vvmW0SsfCyvkIEjWGGwDj4xn5JYxro';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,7 +113,7 @@ class _MainShellState extends State<_MainShell> {
 
   @override Widget build(BuildContext context) => Scaffold(
     backgroundColor: LTColors.bg,
-    body: IndexedStack(index: _index, children: _pages),
+    body: _pages[_index],
     bottomNavigationBar: _BottomNav(
       items: _navItems,
       selected: _index,
@@ -133,7 +134,7 @@ class _BottomNav extends StatelessWidget {
   const _BottomNav({required this.items, required this.selected, required this.onSelect});
 
   @override Widget build(BuildContext context) => Container(
-    height: kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom,
+    
     padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
     decoration: const BoxDecoration(
       color: LTColors.surface1,

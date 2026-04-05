@@ -12,6 +12,7 @@ import '../core/theme/app_theme.dart';
 import '../shared/icons/lt_icons.dart';
 import '../shared/widgets/lt_widgets.dart';
 import 'dart:math' as math;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //  HABITS SCREEN
@@ -571,7 +572,7 @@ class _JournalScreenState extends State<JournalScreen> {
   );
 
   void _openEditor(BuildContext ctx, JournalEntry? e) => Navigator.push(ctx,
-    MaterialPageRoute(builder: (_) => _JournalEditor(userId: widget.userId, entry: e, onSave: (_) => _load())));
+    MaterialPageRoute(builder: (_) => _JournalEditor(userId: widget.userId, entry: e, onSave: () => _load())));
 }
 
 class _JournalEditor extends StatefulWidget {
