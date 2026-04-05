@@ -1,7 +1,6 @@
 // lib/shared/widgets/lt_widgets.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../icons/lt_icons.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -158,9 +157,9 @@ class LTInput extends StatelessWidget {
             hintStyle: LTText.body(15, color: LTColors.text3),
             filled: true,
             fillColor: LTColors.surface2,
-            border: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-            enabledBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-            focusedBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.cyan, width: 1.5)),
+            border: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+            enabledBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+            focusedBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.cyan, width: 1.5)),
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
           ),
         ),
@@ -548,7 +547,7 @@ Future<T?> showLTSheet<T>(BuildContext context, Widget Function(BuildContext) bu
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 12),
-          Container(width: 36, height: 4, decoration: BoxDecoration(color: LTColors.border3, borderRadius: LTRadius.full)),
+          Container(width: 36, height: 4, decoration: const BoxDecoration(color: LTColors.border3, borderRadius: LTRadius.full)),
           const SizedBox(height: 4),
           Flexible(child: builder(ctx)),
         ],
@@ -583,7 +582,7 @@ class LTEmptyState extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.xl),
+            decoration: const BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.xl),
             child: LTIcon(icon, size: 32, color: LTColors.text3),
           ),
           const SizedBox(height: 20),

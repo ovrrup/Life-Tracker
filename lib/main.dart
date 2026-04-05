@@ -6,7 +6,6 @@ import 'core/theme/app_theme.dart';
 import 'features/dashboard/dashboard_screen.dart';
 import 'features/screens.dart';
 import 'shared/icons/lt_icons.dart';
-import 'shared/widgets/lt_widgets.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  SUPABASE CONFIG  →  Replace with your project URL and anon key
@@ -71,10 +70,12 @@ class _AuthGateState extends State<_AuthGate> {
   }
 
   @override Widget build(BuildContext context) {
-    if (!_checked) return const Scaffold(
+    if (!_checked) {
+      return const Scaffold(
       backgroundColor: LTColors.bg,
       body: Center(child: SizedBox(width: 28, height: 28, child: CircularProgressIndicator(color: LTColors.cyan, strokeWidth: 2))),
     );
+    }
     if (_user == null) return const AuthScreen();
     return _MainShell(userId: _user!.id);
   }
@@ -192,7 +193,11 @@ class _QuickActionFABState extends State<_QuickActionFAB> with SingleTickerProvi
   void _toggle() {
     HapticFeedback.mediumImpact();
     setState(() => _open = !_open);
-    if (_open) _ctrl.forward(); else _ctrl.reverse();
+    if (_open) {
+      _ctrl.forward();
+    } else {
+      _ctrl.reverse();
+    }
   }
 
   @override Widget build(BuildContext context) => Column(

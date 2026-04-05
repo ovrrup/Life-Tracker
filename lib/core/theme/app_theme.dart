@@ -193,9 +193,9 @@ class LTTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: LTColors.surface2,
-      border: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-      enabledBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-      focusedBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.cyan, width: 1.5)),
+      border: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+      enabledBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+      focusedBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.cyan, width: 1.5)),
       hintStyle: LTText.body(14, color: LTColors.text3),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     ),

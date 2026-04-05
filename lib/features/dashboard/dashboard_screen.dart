@@ -6,7 +6,6 @@ import '../../core/services/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/icons/lt_icons.dart';
 import '../../shared/widgets/lt_widgets.dart';
-import 'dart:math' as math;
 
 class DashboardScreen extends StatefulWidget {
   final String userId;
@@ -83,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _toggleHabit(Habit h) async {
     final today = DateTime.now();
-    final key = '${h.id}_${_todayDateStr}';
+    final key = '${h.id}_$_todayDateStr';
     final was = _logs[key] ?? false;
     setState(() => _logs[key] = !was);
     await _svc.toggleHabitLog(h.id, today, !was);
@@ -154,35 +153,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // ─── HEADER ──────────────────────────────────────────────────────────────
-  Widget _buildHeader() => Padding(
-    padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_greeting, style: LTText.body(14, color: LTColors.text3)),
-              const SizedBox(height: 2),
-              Text(
-                _user?.displayName ?? 'Loading…',
-                style: LTText.display(28),
-              ),
-              const SizedBox(height: 8),
-              _buildStreakPill(),
-            ],
-          ),
-        ),
-        const SizedBox(width: 16),
-        LTProgressRing(
-          value: _habitPct,
-          size: 68,
-          strokeWidth: 5,
-          label: '${(_habitPct * 100).round()}%',
-        ),
-      ],
-    ),
-  );
+    Widget _buildHeader() => Padding(
+          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+              child: Row(
+                    children: [
+                            Expanded(
+                                      child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                            Text(_greeting, style: LTText.body(14, color: LTColors.text3)),
+                                                                                          const SizedBox(height: 2),
+                                                                                                        Text(
+                                                                                                                        _user?.displayName ?? 'Loading…',
+                                                                                                                                        style: LTText.display(28),
+                                                                                                                                                      ),
+                                                                                                                                                                    const SizedBox(height: 8),
+                                                                                                                                                                                  _buildStreakPill(),
+                                                                                                                                                                                              ],
+                                                                                                                                                                                                        ),
+                                                                                                                                                                                                                ),
+                                                                                                                                                                                                                        const SizedBox(width: 16),
+                                                                                                                                                                                                                                // --- ADD THIS LOGOUT BUTTON ---
+                                                                                                                                                                                                                                        IconButton(
+                                                                                                                                                                                                                                                  icon: const Icon(Icons.logout, color: Colors.grey),
+                                                                                                                                                                                                                                                            onPressed: () async {
+                                                                                                                                                                                                                                                                        await SupabaseService.instance.signOut();
+                                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                                                          ),
+                                                                                                                                                                                                                                                                                                  // ------------------------------
+                                                                                                                                                                                                                                                                                                          const SizedBox(width: 16),
+                                                                                                                                                                                                                                                                                                                  LTProgressRing(
+                                                                                                                                                                                                                                                                                                                            value: _habitPct,
+                                                                                                                                                                                                                                                                                                                                      size: 68,
+                                                                                                                                                                                                                                                                                                                                                strokeWidth: 5,
+                                                                                                                                                                                                                                                                                                                                                          label: '${(_habitPct * 100).round()}%',
+                                                                                                                                                                                                                                                                                                                                                                  ),
+                                                                                                                                                                                                                                                                                                                                                                        ],
+                                                                                                                                                                                                                                                                                                                                                                            ),
+                                                                                                                                                                                                                                                                                                                                                                              );
+
+    
 
   Widget _buildStreakPill() {
     final streak = _user?.totalStreak ?? 0;
@@ -232,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LTSectionHeader(title: "Today's Habits", action: 'See all'),
+          const LTSectionHeader(title: "Today's Habits", action: 'See all'),
           const SizedBox(height: 14),
           ...(_habits.take(5).map((h) {
             final done = _logs['${h.id}_$_todayDateStr'] ?? false;
@@ -283,13 +293,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('${_completedTasks}/${_tasks.length}', style: LTText.body(13, color: LTColors.text3)),
+                Text('$_completedTasks/${_tasks.length}', style: LTText.body(13, color: LTColors.text3)),
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () => setState(() => _addingTask = !_addingTask),
                   child: Container(
                     padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(color: LTColors.cyanDim, borderRadius: LTRadius.xs),
+                    decoration: const BoxDecoration(color: LTColors.cyanDim, borderRadius: LTRadius.xs),
                     child: LTIcon(LTIcons.plus, size: 14, color: LTColors.cyan, strokeWidth: 2.2),
                   ),
                 ),
@@ -343,7 +353,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LTSectionHeader(title: 'Goals', action: 'Edit'),
+          const LTSectionHeader(title: 'Goals', action: 'Edit'),
           const SizedBox(height: 14),
           ..._goals.take(3).map((g) => Padding(
             padding: const EdgeInsets.only(bottom: 14),
@@ -392,7 +402,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             trailing: _todayMood != null
               ? Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: LTColors.cyanDim, borderRadius: LTRadius.full),
+                  decoration: const BoxDecoration(color: LTColors.cyanDim, borderRadius: LTRadius.full),
                   child: Text(_todayMood!.level.label, style: LTText.body(12, color: LTColors.cyan, weight: FontWeight.w600)),
                 )
               : null,
@@ -423,7 +433,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     padding: const EdgeInsets.all(20),
     child: Column(children: List.generate(4, (_) =>
       Padding(padding: const EdgeInsets.only(bottom: 14), child:
-        Container(height: 100, decoration: BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.lg))
+        Container(height: 100, decoration: const BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.lg))
           .animate(onPlay: (c) => c.repeat())
           .shimmer(duration: 1200.ms, color: LTColors.surface3),
       ),

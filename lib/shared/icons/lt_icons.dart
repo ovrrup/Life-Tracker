@@ -399,13 +399,17 @@ class _StarIcon extends LTIconData {
   @override
   void draw(Canvas canvas, Paint paint) {
     final path = Path();
-    final cx = 12.0; final cy = 12.0; final r1 = 8.0; final r2 = 3.5;
+    const cx = 12.0; const cy = 12.0; const r1 = 8.0; const r2 = 3.5;
     for (int i = 0; i < 5; i++) {
       final a1 = (i * 72 - 90) * 3.14159 / 180;
       final a2 = (i * 72 - 90 + 36) * 3.14159 / 180;
       final x1 = cx + r1 * Math.cos(a1); final y1 = cy + r1 * Math.sin(a1);
       final x2 = cx + r2 * Math.cos(a2); final y2 = cy + r2 * Math.sin(a2);
-      if (i == 0) path.moveTo(x1, y1); else path.lineTo(x1, y1);
+      if (i == 0) {
+        path.moveTo(x1, y1);
+      } else {
+        path.lineTo(x1, y1);
+      }
       path.lineTo(x2, y2);
     }
     path.close();

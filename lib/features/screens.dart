@@ -11,7 +11,6 @@ import '../core/services/supabase_service.dart';
 import '../core/theme/app_theme.dart';
 import '../shared/icons/lt_icons.dart';
 import '../shared/widgets/lt_widgets.dart';
-import 'dart:math' as math;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -97,7 +96,11 @@ class _HabitsScreenState extends State<HabitsScreen> {
   void _showHabitForm(BuildContext ctx, Habit? h) => showLTSheet(ctx, (_) =>
     _HabitForm(userId: widget.userId, habit: h, onSave: (saved) async {
       Navigator.pop(ctx);
-      if (h == null) await _svc.createHabit(saved); else await _svc.updateHabit(saved);
+      if (h == null) {
+        await _svc.createHabit(saved);
+      } else {
+        await _svc.updateHabit(saved);
+      }
       _load();
     }),
   );
@@ -114,7 +117,7 @@ class _HabitRow extends StatelessWidget {
 
   @override Widget build(BuildContext context) {
     final today = DateTime.now();
-    final isToday = (DateTime d) => d.year == today.year && d.month == today.month && d.day == today.day;
+    bool isToday(DateTime d) => d.year == today.year && d.month == today.month && d.day == today.day;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -166,7 +169,7 @@ class _HabitForm extends StatefulWidget {
 class _HabitFormState extends State<_HabitForm> {
   late final _nameCtrl = TextEditingController(text: widget.habit?.name ?? '');
   late String _color = widget.habit?.colorHex ?? '#3ECFCA';
-  late List<int> _days = List.from(widget.habit?.activeDays ?? [0,1,2,3,4,5,6]);
+  late final List<int> _days = List.from(widget.habit?.activeDays ?? [0,1,2,3,4,5,6]);
   final _colors = ['#3ECFCA','#C8A84C','#4DB87A','#D95F5F','#8B7CF6','#F0A868','#E887C4','#7EC8E3'];
   final _dayLabels = ['Mo','Tu','We','Th','Fr','Sa','Su'];
 
@@ -261,10 +264,10 @@ class _TasksScreenState extends State<TasksScreen> with TickerProviderStateMixin
         onTap: () => _showTaskForm(context, null))),
       // Tab row
       Container(margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.sm),
+        decoration: const BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.sm),
         padding: const EdgeInsets.all(3),
         child: TabBar(controller: _tab,
-          indicator: BoxDecoration(color: LTColors.surface1, borderRadius: LTRadius.xs),
+          indicator: const BoxDecoration(color: LTColors.surface1, borderRadius: LTRadius.xs),
           indicatorSize: TabBarIndicatorSize.tab,
           dividerColor: Colors.transparent,
           labelStyle: LTText.body(13, weight: FontWeight.w600),
@@ -299,7 +302,11 @@ class _TasksScreenState extends State<TasksScreen> with TickerProviderStateMixin
   void _showTaskForm(BuildContext ctx, Task? t) => showLTSheet(ctx, (_) =>
     _TaskForm(userId: widget.userId, task: t, onSave: (saved) async {
       Navigator.pop(ctx);
-      if (t == null) await _svc.createTask(saved); else await _svc.updateTask(saved);
+      if (t == null) {
+        await _svc.createTask(saved);
+      } else {
+        await _svc.updateTask(saved);
+      }
       _load();
     }),
   );
@@ -342,7 +349,7 @@ class _TaskFormState extends State<_TaskForm> {
   late final _titleCtrl = TextEditingController(text: widget.task?.title ?? '');
   late final _notesCtrl = TextEditingController(text: widget.task?.notes ?? '');
   late TaskPriority _priority = widget.task?.priority ?? TaskPriority.medium;
-  late DateTime _date = widget.task?.date ?? DateTime.now();
+  late final DateTime _date = widget.task?.date ?? DateTime.now();
 
   @override Widget build(BuildContext context) => SingleChildScrollView(
     padding: EdgeInsets.fromLTRB(20, 8, 20, MediaQuery.of(context).viewInsets.bottom + 24),
@@ -444,7 +451,7 @@ class _MoodScreenState extends State<MoodScreen> {
 
           // Log today
           LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: "How are you feeling?"),
+            const LTSectionHeader(title: "How are you feeling?"),
             const SizedBox(height: 16),
             LTMoodPicker(selected: _selectedLevel, onSelect: (i) => setState(() => _selectedLevel = i)),
             const SizedBox(height: 16),
@@ -457,7 +464,7 @@ class _MoodScreenState extends State<MoodScreen> {
 
           // 14-day history
           if (_entries.isNotEmpty) LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: '14-Day History'),
+            const LTSectionHeader(title: '14-Day History'),
             const SizedBox(height: 14),
             _MoodChart(entries: _entries.take(14).toList().reversed.toList()),
             const SizedBox(height: 16),
@@ -559,7 +566,7 @@ class _JournalScreenState extends State<JournalScreen> {
                       Text(e.content, style: LTText.body(14, color: LTColors.text2), maxLines: 3, overflow: TextOverflow.ellipsis),
                       const SizedBox(height: 8),
                       Row(children: [
-                        Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3), decoration: BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.full),
+                        Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3), decoration: const BoxDecoration(color: LTColors.surface2, borderRadius: LTRadius.full),
                           child: Text('${e.wordCount} words', style: LTText.label.copyWith(color: LTColors.text3))),
                       ]),
                     ]),
@@ -612,7 +619,7 @@ class _JournalEditorState extends State<_JournalEditor> {
       backgroundColor: LTColors.bg,
       leading: GestureDetector(onTap: () => Navigator.pop(context), child: Padding(padding: const EdgeInsets.all(12), child: LTIcon(LTIcons.back, size: 22, color: LTColors.text2))),
       title: AnimatedBuilder(animation: _contentCtrl, builder: (_,__) =>
-        Text('${_wordCount} words', style: LTText.body(13, color: LTColors.text3))),
+        Text('$_wordCount words', style: LTText.body(13, color: LTColors.text3))),
       actions: [
         Padding(padding: const EdgeInsets.fromLTRB(0,8,16,8),
           child: LTButton(label: 'Save', isPrimary: true, isSmall: true, isLoading: _saving, onTap: _save)),
@@ -681,7 +688,11 @@ class _GoalsScreenState extends State<GoalsScreen> {
   void _showForm(BuildContext ctx, Goal? g) => showLTSheet(ctx, (_) =>
     _GoalForm(userId: widget.userId, goal: g, onSave: (saved) async {
       Navigator.pop(ctx);
-      if (g == null) await _svc.createGoal(saved); else await _svc.updateGoal(saved);
+      if (g == null) {
+        await _svc.createGoal(saved);
+      } else {
+        await _svc.updateGoal(saved);
+      }
       _load();
     }),
   );
@@ -724,9 +735,9 @@ class _GoalCardState extends State<_GoalCard> {
           style: LTText.body(14), decoration: InputDecoration(
             hintText: 'Update progress…', hintStyle: LTText.body(14, color: LTColors.text3),
             filled: true, fillColor: LTColors.surface2,
-            border: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-            enabledBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.border1)),
-            focusedBorder: OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: const BorderSide(color: LTColors.cyan, width: 1.5)),
+            border: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+            enabledBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.border1)),
+            focusedBorder: const OutlineInputBorder(borderRadius: LTRadius.sm, borderSide: BorderSide(color: LTColors.cyan, width: 1.5)),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           )),
         ),
@@ -881,7 +892,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
 
           // Habit heatmap
           LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: '12-Week Habit Activity'),
+            const LTSectionHeader(title: '12-Week Habit Activity'),
             const SizedBox(height: 14),
             LTHeatmap(data: _habitHeatmap()),
           ])),
@@ -889,7 +900,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
 
           // Task completion bars
           LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: 'Task Completion (7 days)'),
+            const LTSectionHeader(title: 'Task Completion (7 days)'),
             const SizedBox(height: 14),
             LTMiniBarChart(
               values: _taskCompletionByDay(),
@@ -903,7 +914,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
           const SizedBox(height: 14),
 
           // AI insights
-          LTSectionHeader(title: 'Your Insights'),
+          const LTSectionHeader(title: 'Your Insights'),
           const SizedBox(height: 10),
           ..._generateInsights().map((c) => Padding(padding: const EdgeInsets.only(bottom: 10), child:
             _InsightCard(card: c))),
@@ -912,7 +923,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
           if (_goals.isNotEmpty) ...[
             const SizedBox(height: 14),
             LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              LTSectionHeader(title: 'Goal Progress'),
+              const LTSectionHeader(title: 'Goal Progress'),
               const SizedBox(height: 14),
               ..._goals.map((g) => Padding(padding: const EdgeInsets.only(bottom: 14), child:
                 Row(children: [
@@ -1024,7 +1035,7 @@ class _SocialScreenState extends State<SocialScreen> {
 
           // Add friend
           LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: 'Add a Friend'),
+            const LTSectionHeader(title: 'Add a Friend'),
             const SizedBox(height: 12),
             Row(children: [
               Expanded(child: LTInput(placeholder: 'friend@email.com', controller: _emailCtrl, keyboardType: TextInputType.emailAddress)),
@@ -1079,7 +1090,7 @@ class _SocialScreenState extends State<SocialScreen> {
 
           // Activity feed
           LTCard(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LTSectionHeader(title: 'Activity Feed'),
+            const LTSectionHeader(title: 'Activity Feed'),
             const SizedBox(height: 12),
             if (_activity.isEmpty) Text('No activity yet. Add friends to see their progress!', style: LTText.body(14, color: LTColors.text3))
             else ..._activity.map((a) => Padding(padding: const EdgeInsets.only(bottom: 12), child:
@@ -1166,7 +1177,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         if (_error != null) ...[
           const SizedBox(height: 12),
-          Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: LTColors.redDim, borderRadius: LTRadius.sm),
+          Container(padding: const EdgeInsets.all(12), decoration: const BoxDecoration(color: LTColors.redDim, borderRadius: LTRadius.sm),
             child: Text(_error!, style: LTText.body(13, color: LTColors.red))),
         ],
         const SizedBox(height: 24),
