@@ -1,7 +1,7 @@
 name: Build Android APK
 
 on: 
-  workflow_dispatch: # This creates a button to manually trigger the build
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,8 +16,17 @@ jobs:
       - run: flutter pub get
       - run: flutter build apk --release
       
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: build/app/outputs/flutter-apk
+          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      
       - uses: actions/upload-artifact@v4
         with:
-          name: LifeTrack-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
-
+          name: LifeTrack-Official-APK
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
